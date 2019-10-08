@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Styles</title>
+  <style type="text/css">
+    .primary {
+      color: orange;
+    }
+  </style>
+</head>
+<body>
+  <div id="content"></div>
+  <script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+  <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script type="text/babel">
+    const Child = (props) => {
+      return (
+        <h1 style={props.style}>Wow! I sure look great in {props.style.color}.</h1>
+      );
+    };
+    const Parent = (props) => {
+      const parentStyle = {
+        backgroundColor: '#EEE',
+        fontFamily: 'sans-serif'
+      };
+      const childStyles = {
+        redStyle: {
+          color: 'red'
+        },
+        blueStyle: {
+          color: 'blue'
+        }
+      };
+      return (
+        <div style={parentStyle}>
+          <Child style={childStyles.redStyle}/>
+          <Child style={childStyles.blueStyle}/>
+          <p style={{ color: 'teal' }}>Thanks funky inline styles.</p>
+          <p className="primary">Oh, and classes are still a thing, too.</p>
+        </div>
+      );
+    };
+    ReactDOM.render(
+      <Parent />,
+      document.getElementById('content')
+    );
+  </script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Finale</title>
+</head>
+<body>
+  <div id="content"></div>
+  <script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+  <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script type="text/babel">
+    const colorJSON = '[{"name": "red", "hsl": "hsl(0, 100%, 50%)"}, {"name": "blue", "hsl": "hsl(240, 100%, 50%)"}, {"name": "purple", "hsl": "hsl(270, 100%, 50%)"}]';
+    const ColorList = (props) => {
+      const colors = props.colorData.map(({name, hsl}, index) => {
+        return <li style={{color: hsl}} onClick={() => props.handleColorClick(index)}>{name}</li>;
+      });
+      return (
+        <div style={{fontFamily: 'sans-serif'}}>
+          <p>{props.clickHandlerDescription}</p>
+          <ul style={{fontSize: 48}}>{colors}</ul>
+        </div>
+      );
+    };
+    class ColorCreator extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          name: '',
+          hue: 0
+        };
+      }
+      render() {
+        return (
+          <div style={{fontFamily: 'sans-serif'}}>
+            <label>Name: 
+              <input type="text" value={this.state.name} onChange={(event) => this.handleNameChange(event)}/>
+            </label>
+            <label style={{marginLeft: 4}}>Hue: 
+              <input type="number" value={this.state.hue} onChange={(event) => this.handleHueChange(event)} min="0" max="355" step="5"/>
+            </label>
+            <button style={{marginLeft: 4}} onClick={() => this.handleClick()}>Create color</button>
+            <p>Or...</p>
+            <button onClick={() => this.generateRandomColor()}>Generate random color</button>
+          </div>
+        );
+      }
+      handleNameChange(event) {
+        this.setState({name: event.target.value});
+      }
+      handleHueChange(event) {
+        this.setState({hue: event.target.value});
+      }
+      handleClick() {
+        const newColor = {
+          name: this.state.name,
+          hsl: `hsl(${this.state.hue}, 100%, 50%)`
+        };
+        this.props.createColor(newColor);
+        this.setState({name: '', hue: 0});
+      }
+      generateRandomColor() {
+        const newColor = {
+          name: this.generateRandomColorName(),
+          hsl: `hsl(${Math.floor((Math.random() * 359))}, 100%, 50%)`
+        };
+        this.props.createColor(newColor);
+      }
+      generateRandomColorName() {
+        const consonants = ['b','c','d','f','g','h','j','k','l','m','n','p','r','s','t','v','x','z','w','y'];
+        const vowels = ['a','e','i','o','u'];
+        let name = consonants[Math.floor((Math.random() * consonants.length))] + vowels[Math.floor((Math.random() * vowels.length))] + consonants[Math.floor((Math.random() * consonants.length))];
+        if (Math.random() >= 0.5) {
+          name += vowels[Math.floor((Math.random() * vowels.length))] + consonants[Math.floor((Math.random() * consonants.length))];
+        }
+        if (Math.random() >= 0.5) {
+          name += vowels[Math.floor((Math.random() * vowels.length))] + consonants[Math.floor((Math.random() * consonants.length))];
+        }
+        return name;
+      }
+    }
+    class ColorListContainer extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          colorData: []
+        };
+      }
+      render() {
+        const colorListProps = {
+          colorData: this.state.colorData,
+          handleColorClick: (index) => this.handleColorClick(index),
+          clickHandlerDescription: 'Click a color to see a different saturation.'
+        };
+        return (
+          <div>
+            <ColorCreator createColor={(newColor) => this.createColor(newColor)}/>
+            <ColorList {...colorListProps}/>
+          </div>
+        );
+      }
+      componentDidMount() {
+        const colorData = JSON.parse(colorJSON);
+        this.setState({colorData});
+      }
+      createColor(newColor) {
+        const colorData = [...this.state.colorData, newColor];
+        this.setState({colorData});
+      }
+      handleColorClick(index) {
+        let colorData = this.state.colorData;
+        colorData[index].hsl = this.changeSaturation(colorData[index].hsl);
+        this.setState({colorData});
+      }
+      changeSaturation(hsl) {
+        const regexp = /hsl\(\s*(\d+)\s*,\s*(\d+%)\s*,\s*(\d+%)\)/g;
+        const hslArray = regexp.exec(hsl).slice(1);
+        const randomSaturation = Math.floor((Math.random() * 75) + 25);
+        return `hsl(${hslArray[0]}, ${randomSaturation}%, ${hslArray[2]})`;
+      }
+    }
+    ReactDOM.render(
+      <ColorListContainer />,
+      document.getElementById('content')
+    );
+  </script>
+</body>
+</html>

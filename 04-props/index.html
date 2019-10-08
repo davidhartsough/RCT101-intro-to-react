@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Props</title>
+</head>
+<body>
+  <div id="content"></div>
+  <script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+  <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script type="text/babel">
+    const MyComponent = (props) => {
+      return <h1>Wow! This is a {props.adjective} component.</h1>;
+    };
+    class App extends React.Component {
+      constructor(props) {
+        super(props);
+      }
+      handleClick() {
+        console.log('Congrats! You clicked!');
+      }
+      render() {
+        return (
+          <div onClick={() => this.handleClick()}>
+            <MyComponent adjective="rad" />
+            <MyComponent adjective="super" />
+            <MyComponent adjective={this.props.adjective} />
+            <div>
+              {this.props.children}
+            </div>
+          </div>
+        );
+      }
+    }
+    ReactDOM.render(
+      <App adjective="dope"><p>Hey look at me! I am a child in a p tag.</p></App>,
+      document.getElementById('content')
+    );
+  </script>
+</body>
+</html>

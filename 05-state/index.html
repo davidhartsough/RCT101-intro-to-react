@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>State</title>
+</head>
+<body>
+  <div id="content"></div>
+  <script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+  <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script type="text/babel">
+    class MyComponent extends React.Component {
+      constructor() {
+        super();
+        this.state = {
+          hasBeenClicked: false
+        };
+      }
+      handleClick() {
+        console.log('Congrats! You clicked!');
+        this.setState({
+          hasBeenClicked: true
+        });
+      }
+      render() {
+        const clickedStatus = (this.state.hasBeenClicked) ? 'definitely' : 'never';
+        return (
+          <h1 onClick={() => this.handleClick()}>
+            Wow! I have <em>{clickedStatus}</em> been clicked.
+          </h1>
+        );
+      }
+    }
+    ReactDOM.render(
+      <MyComponent />,
+      document.getElementById('content')
+    );
+  </script>
+</body>
+</html>

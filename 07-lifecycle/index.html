@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lifecycle</title>
+</head>
+<body>
+  <div id="content"></div>
+  <script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+  <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script type="text/babel">
+    class Child extends React.Component {
+      constructor(props) {
+        super(props);
+      }
+      componentWillMount() {
+        console.log('triggered Child componentWillMount');
+      }
+      componentWillReceiveProps(nextProps) {
+        console.log('triggered Child componentWillReceiveProps');
+      }
+      shouldComponentUpdate(nextProps, nextState) {
+        console.log('triggered Child shouldComponentUpdate');
+        return true;
+      }
+      componentWillUpdate(nextProps, nextState) {
+        console.log('triggered Child componentWillUpdate');
+      }
+      render() {
+        console.log('triggered Child render');
+        return <em>{this.props.clickedStatus}</em>;
+      }
+      componentDidMount() {
+        console.log('triggered Child componentDidMount');
+      }
+      componentDidUpdate(prevProps, prevState) {
+        console.log('triggered Child componentDidUpdate');
+      }
+      componentWillUnmount() {
+        console.log('triggered Child componentWillUnmount');
+      }
+    }
+    class Parent extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          hasBeenClicked: false
+        };
+      }
+      handleClick() {
+        console.log('Congrats! You clicked!');
+        this.setState({
+          hasBeenClicked: true
+        });
+      }
+      componentWillMount() {
+        console.log('triggered Parent componentWillMount');
+      }
+      componentWillReceiveProps(nextProps) {
+        console.log('triggered Parent componentWillReceiveProps');
+      }
+      shouldComponentUpdate(nextProps, nextState) {
+        console.log('triggered Parent shouldComponentUpdate');
+        return true;
+      }
+      componentWillUpdate(nextProps, nextState) {
+        console.log('triggered Parent componentWillUpdate');
+      }
+      render() {
+        console.log('triggered Parent render');
+        const clickedStatus = (this.state.hasBeenClicked) ? 'definitely' : 'never';
+        return (
+          <h1 onClick={() => this.handleClick()}>
+            Wow! I have <Child clickedStatus={clickedStatus} /> been clicked.
+          </h1>
+        );
+      }
+      componentDidMount() {
+        console.log('triggered Parent componentDidMount');
+      }
+      componentDidUpdate(prevProps, prevState) {
+        console.log('triggered Parent componentDidUpdate');
+      }
+      componentWillUnmount() {
+        console.log('triggered Parent componentWillUnmount');
+      }
+    }
+    ReactDOM.render(
+      <Parent />,
+      document.getElementById('content')
+    );
+  </script>
+</body>
+</html>
