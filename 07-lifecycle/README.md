@@ -1,4 +1,4 @@
-# Lifecycle
+# Lifecycle (_Outdated_)
 
 ## Objective
 
@@ -13,7 +13,7 @@ The goal of this lesson is to learn what the different lifecycle methods of a Re
 Lifecycle is the series of changes in the life of an organism, including reproduction (which completes and perpetuates the cycle). Duh.
 Any other questions?
 
-OH! Right... Sorry. Wrong lessons. Here we are; React. Yes. Very good. 
+OH! Right... Sorry. Wrong lessons. Here we are; React. Yes. Very good.
 
 Today we are discussing the lifecycle of a React component. The component lifecycle consists of three primary stages of existence: (1) Mounting, (2) Updating, and (3) Unmounting. AKA Birth, Life, and Death. In your UI, your components may not go through all these stages of life; some may only ever mount because they are purely presentational and the data they are presenting never changes; others may only ever mount and then update when data changes but never experience unmounting. Some components are forever...eternal. Do those components ever unmount? Many philosophers and theologians have long-questioned the after-life of components. No one knows what happens to them when your browser closes. More problematic still: what happens to React components when the browser crashes? Do React components have a soul?
 
@@ -25,7 +25,7 @@ These methods are called when an instance of a component is being created and in
 #### constructor()
 `constructor(props)`
 The constructor for a React component is called before it is mounted.
-Remeber to call `super(props)` before any other statement.
+Remember to call `super(props)` before any other statement.
 
 The constructor is the right place to initialize state. If you don't initialize state and you don't bind methods, you don't need to implement a constructor for your React component.
 
@@ -41,7 +41,7 @@ This is the only lifecycle hook called on server rendering. Generally, we recomm
 
 #### render()
 `render()`
-Render is the only method that is required. When called, it should examine `this.props` and `this.state` and return a single React element. 
+Render is the only method that is required. When called, it should examine `this.props` and `this.state` and return a single React element.
 
 If you don't want anything to render, simply return `null` or `false`.
 
@@ -69,7 +69,7 @@ This method needs to return a boolean. By default, this returns `true`, and when
 If you are confident you want to write it by hand, you may compare this.props with nextProps and this.state with nextState and return false to tell React the update can be skipped.
 
 The default behavior is to re-render on every state change, and in the vast majority of cases you should rely on the default behavior.
-Notes: 
+Notes:
  - This method is not called for the initial render or when forceUpdate() is used.
  - Returning false does not prevent child components from re-rendering when their state changes.
  - In the future, React may treat shouldComponentUpdate() as a hint rather than a strict directive, and returning `false` may still result in a re-rendering of the component.
@@ -194,7 +194,7 @@ Looking back at this, now you can recognize that we've already been using two me
     }
 ```
 
-Go ahead and throw this in the browser and check out the console output! Cool beans. 
+Go ahead and throw this in the browser and check out the console output! Cool beans.
 
 But to give you a better idea of these lifecycle's let's incorporate some component interactions—let's put in a child component. First, copy and paste your component so you don't have to write out all those methods again. Next, call the original component `Parent` and the new component `Child` (update the first parameter of `ReactDOM.render`). Now, simplify the `Child` by removing the click handler and any mention of state (`handleClick()`, `constructor()`, `onClick`, and `clickedStatus`). Also, instead of completely removing `clickedStatus` from within render, just add `this.props.` before it. Here's what your `Child` component should look like thus far:
 

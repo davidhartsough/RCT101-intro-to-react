@@ -10,11 +10,11 @@ The goal of this lesson is to learn a few different (and unique) ways to style R
 
 > What is it?
 
-Styling? Oh, it's exactly what it has always been. There are just some different patterns to discuss now in this new UI-building methodology (React-land). 
+Styling? Oh, it's exactly what it has always been. There are just some different patterns to discuss now in this new UI-building methodology (React-land).
 
 ### Inline styles
 
-Why inline styling in itself is no new concept, the idea of creating a variable that is defines a style object very well may be for you. One of the oddities of this pattern is that you will be writing CSS rules in JS. I'm sure you've had to do this at some point, and you've accessed/modified the style object of an element, like so: 
+Why inline styling in itself is no new concept, the idea of creating a variable that is defines a style object very well may be for you. One of the oddities of this pattern is that you will be writing CSS rules in JS. I'm sure you've had to do this at some point, and you've accessed/modified the style object of an element, like so:
 ```js
 document.getElementById('content').style.fontWeight = 100;
 ```
@@ -41,7 +41,7 @@ It's Detailed Exploratory, Explanatory Application Examination Exercise Lab Acti
 Okay, let's just say that we left off with this snippet of JSX, even though we really didn't:
 
 ```jsx
-    const Child = (props) => { return <h1>Wow! I sure love these lessons.</h1> };
+    const Child = (props) => <h1>Wow! I sure love these lessons.</h1>;
     const Parent = (props) => {
       return (
         <div>
@@ -139,28 +139,26 @@ For the two Child elements that you're rendering in the Parent component, pass t
 ```
 
 *Step 3: Utilize the Child's props*
-Now that you've given the Child component a `style` prop to work with, put it to action! All you gotta do is add a style attribute to the `<h1>` and give it a value of `props.style`. 
+Now that you've given the Child component a `style` prop to work with, put it to action! All you gotta do is add a style attribute to the `<h1>` and give it a value of `props.style`.
 
 ```jsx
-    const Child = (props) => { 
-      return <h1 style={props.style}>Wow! I sure love these lessons.</h1>;
-    };
+    const Child = (props) => (
+      <h1 style={props.style}>Wow! I sure love these lessons.</h1>
+    );
 ```
 
-Easy peasy. 
+Easy peasy.
 
 *Step 4: Speak the true-true*
 But how do you make the component tell you what color it is? Good thinking; you're right! The style prop is just another object, so you can access its properties with the dot syntax, duh.
 
 ```jsx
-    const Child = (props) => { 
-      return (
-        <h1 style={props.style}>Wow! I sure look great in {props.style.color}.</h1>
-      );
-    };
+    const Child = (props) => (
+      <h1 style={props.style}>Wow! I sure look great in {props.style.color}.</h1>
+    );
 ```
 
-Now you've got two text blocks that tell you what color they are, but they're both the same color, so that's rather uninteresting. 
+Now you've got two text blocks that tell you what color they are, but they're both the same color, so that's rather uninteresting.
 
 *Step 5: Spice up session*
 Let's expand the style object being passed down to the Child components to have two separate objects inside itself. First, rename it to childStyles. Then make one internal object called `redStyle` and the other `blueStyle`. I don't even have to tell you what to do next. (But remember to pass down the new redStyle object to the first Child component and the blueStyle object to the second one.)
@@ -188,7 +186,7 @@ Let's expand the style object being passed down to the Child components to have 
     };
 ```
 
-Gold star! Gold star! How many gold stars do you have now? You've done lots o' cool stuff. 
+Gold star! Gold star! How many gold stars do you have now? You've done lots o' cool stuff.
 Before wrapping up, try out writing an inline object inside the style attribute of another element:
 
 ```jsx

@@ -28,7 +28,11 @@ Go ahead and start off fresh with a new snippet of JSX:
         super(props);
       }
       render() {
-        return <ul style={{fontSize: 48}}><li style={{color: 'hsl(0, 100%, 50%)'}}>red</li></ul>;
+        return (
+          <ul style={{fontSize: 48}}>
+            <li style={{color: 'hsl(0, 100%, 50%)'}}>red</li>
+          </ul>
+        );
       }
     }
     ReactDOM.render(
@@ -43,7 +47,7 @@ Now let's create some fake data outside the React component and just put it into
 const colorJSON = '[{"name": "red", "hsl": "hsl(0, 100%, 50%)"}, {"name": "blue", "hsl": "hsl(240, 100%, 50%)"}, {"name": "purple", "hsl": "hsl(270, 100%, 50%)"}]';
 ```
 
-In this example we won't be manipulating this data at all, but we know that we will want to allow the user to edit it in some future version of this app. So let's go ahead and stick this data into the `ColorList` component's state. 
+In this example we won't be manipulating this data at all, but we know that we will want to allow the user to edit it in some future version of this app. So let's go ahead and stick this data into the `ColorList` component's state.
 To do this, first we need to initialize a default state in the `constructor`. Let's call this `colorData` and assume that it will be an array:
 
 ```jsx
@@ -68,14 +72,18 @@ First we'll "grab" the JSON and throw it into a variable by using `JSON.parse()`
 
 (Normally you'd have some nice call to your JSON endpoint with a lovely Promise handler that says "then, if no error, set the state." But you get the idea. This example will do for now.)
 
-Now that you've got the data, whatchu gonna do with it?! I'd think it'd be pretty cool to map that array of color data and render each color into a nice little list item (`<li>`) element. To do this, let's use the handy array map function, and let's create a new function to use in the map function. We shall call it `renderColorItem` and it will be amazing; it will accept an object that has the `name` and `hsl` keys as a parameter, and it will return a list element that says the name of the color and uses the HSL value to set the font color of the item. 
+Now that you've got the data, whatchu gonna do with it?! I'd think it'd be pretty cool to map that array of color data and render each color into a nice little list item (`<li>`) element. To do this, let's use the handy array map function, and let's create a new function to use in the map function. We shall call it `renderColorItem` and it will be amazing; it will accept an object that has the `name` and `hsl` keys as a parameter, and it will return a list element that says the name of the color and uses the HSL value to set the font color of the item.
 
 ```jsx
       renderColorItem({name, hsl}) {
         return <li style={{color: hsl}}>{name}</li>;
       }
       render() {
-        return <ul style={{fontSize: 48}}>{this.state.colorData.map(this.renderColorItem)}</ul>;
+        return (
+          <ul style={{fontSize: 48}}>
+            {this.state.colorData.map(this.renderColorItem)}
+          </ul>
+        );
       }
 ```
 
@@ -94,7 +102,11 @@ Amazing. Absolutely amazing. Your component looks truly terrific. Here is all yo
         return <li style={{color: hsl}}>{name}</li>;
       }
       render() {
-        return <ul style={{fontSize: 48}}>{this.state.colorData.map(this.renderColorItem)}</ul>;
+        return (
+          <ul style={{fontSize: 48}}>
+            {this.state.colorData.map(this.renderColorItem)}
+          </ul>
+        );
       }
       componentDidMount() {
         const colorData = JSON.parse(colorJSON);

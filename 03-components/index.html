@@ -6,13 +6,11 @@
 </head>
 <body>
   <div id="content"></div>
-  <script src="https://unpkg.com/react@15/dist/react.min.js"></script>
-  <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+  <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
   <script type="text/babel">
-    const MyComponent = () => {
-      return <h1>Wow! This is a neat component.</h1>;
-    };
+    const MyComponent = () => <h1>Wow! This is a neat component.</h1>;
     class App extends React.Component {
       render() {
         return (

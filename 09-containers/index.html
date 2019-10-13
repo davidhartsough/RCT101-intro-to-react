@@ -6,22 +6,31 @@
 </head>
 <body>
   <div id="content"></div>
-  <script src="https://unpkg.com/react@15/dist/react.min.js"></script>
-  <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+  <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
   <script type="text/babel">
     const colorJSON = '[{"name": "red", "hsl": "hsl(0, 100%, 50%)"}, {"name": "blue", "hsl": "hsl(240, 100%, 50%)"}, {"name": "purple", "hsl": "hsl(270, 100%, 50%)"}]';
-    const ColorList = (props) => {
-      const colors = props.colorData.map(({name, hsl}, index) => {
-        return <li style={{color: hsl}} onClick={() => props.handleColorClick(index)}>{name}</li>;
-      });
-      return (
-        <div style={{fontFamily: 'sans-serif'}}>
-          <p>{props.clickHandlerDescription}</p>
-          <ul style={{fontSize: 48}}>{colors}</ul>
-        </div>
-      );
-    };
+    const ColorList = ({
+      colorData,
+      handleColorClick,
+      clickHandlerDescription
+    }) => (
+      <div style={{ fontFamily: "sans-serif" }}>
+        <p>{clickHandlerDescription}</p>
+        <ul style={{ fontSize: 48 }}>
+          {colorData.map(({ name, hsl }, index) => (
+            <li
+              key={`${name}-${hsl}-${index}`}
+              style={{ color: hsl }}
+              onClick={() => handleColorClick(index)}
+            >
+              {name}
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
     class ColorListContainer extends React.Component {
       constructor(props) {
         super(props);
@@ -30,33 +39,31 @@
         };
       }
       render() {
-        const colorListProps = {
-          colorData: this.state.colorData,
-          handleColorClick: (index) => this.handleColorClick(index),
-          clickHandlerDescription: 'Click a color to see a different saturation.'
-        };
-        return <ColorList {...colorListProps}/>;
+        return (
+          <ColorList
+            colorData={this.state.colorData}
+            handleColorClick={index => this.handleColorClick(index)}
+            clickHandlerDescription="Click a color to see a different saturation."
+          />
+        );
       }
       componentDidMount() {
         const colorData = JSON.parse(colorJSON);
-        this.setState({colorData});
+        this.setState({ colorData });
       }
       handleColorClick(index) {
-        let colorData = this.state.colorData;
+        const colorData = [...this.state.colorData];
         colorData[index].hsl = this.changeSaturation(colorData[index].hsl);
-        this.setState({colorData});
+        this.setState({ colorData });
       }
       changeSaturation(hsl) {
         const regexp = /hsl\(\s*(\d+)\s*,\s*(\d+%)\s*,\s*(\d+%)\)/g;
         const hslArray = regexp.exec(hsl).slice(1);
-        const randomSaturation = Math.floor((Math.random() * 75) + 25);
+        const randomSaturation = Math.floor(Math.random() * 75 + 25);
         return `hsl(${hslArray[0]},${randomSaturation}%,${hslArray[2]})`;
       }
     }
-    ReactDOM.render(
-      <ColorListContainer />,
-      document.getElementById('content')
-    );
+    ReactDOM.render(<ColorListContainer />, document.getElementById("content"));
   </script>
 </body>
 </html>
