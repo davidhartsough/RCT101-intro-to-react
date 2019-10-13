@@ -15,46 +15,67 @@
       colorData,
       handleColorClick,
       clickHandlerDescription
-    }) => {
-      const { colorData, handleColorClick, clickHandlerDescription } = props;
-      const colors = colorData.map(({name, hsl}, index) => (
-        <li style={{color: hsl}} onClick={() => handleColorClick(index)}>{name}</li>;
-      ));
-      return (
-        <div style={{fontFamily: 'sans-serif'}}>
-          <p>{clickHandlerDescription}</p>
-          <ul style={{fontSize: 48}}>{colors}</ul>
-        </div>
-      );
-    };
+    }) => (
+      <div style={{ fontFamily: "sans-serif" }}>
+        <p>{clickHandlerDescription}</p>
+        <ul style={{ fontSize: 48 }}>
+          {colorData.map(({ name, hsl }, index) => (
+            <li
+              key={`${name}-${hsl}-${index}`}
+              style={{ color: hsl }}
+              onClick={() => handleColorClick(index)}
+            >
+              {name}
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
     class ColorCreator extends React.Component {
       constructor(props) {
         super(props);
         this.state = {
-          name: '',
+          name: "",
           hue: 0
         };
       }
       render() {
         return (
-          <div style={{fontFamily: 'sans-serif'}}>
-            <label>Name:
-              <input type="text" value={this.state.name} onChange={(event) => this.handleNameChange(event)}/>
+          <div style={{ fontFamily: "sans-serif" }}>
+            <label>
+              Name:
+              <input
+                type="text"
+                value={this.state.name}
+                onChange={event => this.handleNameChange(event)}
+              />
             </label>
-            <label style={{marginLeft: 4}}>Hue:
-              <input type="number" value={this.state.hue} onChange={(event) => this.handleHueChange(event)} min="0" max="355" step="5"/>
+            <label style={{ marginLeft: 4 }}>
+              Hue:
+              <input
+                type="number"
+                value={this.state.hue}
+                onChange={event => this.handleHueChange(event)}
+                min="0"
+                max="355"
+                step="5"
+              />
             </label>
-            <button style={{marginLeft: 4}} onClick={() => this.handleClick()}>Create color</button>
+            <button style={{ marginLeft: 4 }} onClick={() => this.handleClick()}>
+              Create color
+            </button>
             <p>Or...</p>
-            <button onClick={() => this.generateRandomColor()}>Generate random color</button>
+            <button onClick={() => this.generateRandomColor()}>
+              Generate random color
+            </button>
           </div>
         );
       }
       handleNameChange(event) {
-        this.setState({name: event.target.value});
+        this.setState({ name: event.target.value });
       }
       handleHueChange(event) {
-        this.setState({hue: event.target.value});
+        this.setState({ hue: event.target.value });
       }
       handleClick() {
         const newColor = {
@@ -62,12 +83,12 @@
           hsl: `hsl(${this.state.hue}, 100%, 50%)`
         };
         this.props.createColor(newColor);
-        this.setState({name: '', hue: 0});
+        this.setState({ name: "", hue: 0 });
       }
       generateRandomColor() {
         const newColor = {
           name: this.generateRandomColorName(),
-          hsl: `hsl(${Math.floor((Math.random() * 359))}, 100%, 50%)`
+          hsl: `hsl(${Math.floor(Math.random() * 359)}, 100%, 50%)`
         };
         this.props.createColor(newColor);
       }
@@ -92,30 +113,29 @@
         };
       }
       render() {
-        const colorListProps = {
-          colorData: this.state.colorData,
-          handleColorClick: (index) => this.handleColorClick(index),
-          clickHandlerDescription: 'Click a color to see a different saturation.'
-        };
         return (
           <div>
             <ColorCreator createColor={(newColor) => this.createColor(newColor)}/>
-            <ColorList {...colorListProps}/>
+            <ColorList
+              colorData={this.state.colorData}
+              handleColorClick={index => this.handleColorClick(index)}
+              clickHandlerDescription="Click a color to see a different saturation."
+            />
           </div>
         );
       }
       componentDidMount() {
         const colorData = JSON.parse(colorJSON);
-        this.setState({colorData});
+        this.setState({ colorData });
       }
       createColor(newColor) {
         const colorData = [...this.state.colorData, newColor];
-        this.setState({colorData});
+        this.setState({ colorData });
       }
       handleColorClick(index) {
         const colorData = [...this.state.colorData];
         colorData[index].hsl = this.changeSaturation(colorData[index].hsl);
-        this.setState({colorData});
+        this.setState({ colorData });
       }
       changeSaturation(hsl) {
         const regexp = /hsl\(\s*(\d+)\s*,\s*(\d+%)\s*,\s*(\d+%)\)/g;
@@ -124,10 +144,7 @@
         return `hsl(${hslArray[0]}, ${randomSaturation}%, ${hslArray[2]})`;
       }
     }
-    ReactDOM.render(
-      <ColorListContainer />,
-      document.getElementById('content')
-    );
+    ReactDOM.render(<ColorListContainer />, document.getElementById('content'));
   </script>
 </body>
 </html>
